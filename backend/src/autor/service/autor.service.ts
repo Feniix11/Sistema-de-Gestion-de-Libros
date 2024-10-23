@@ -11,22 +11,27 @@ export class AutorService {
   constructor(@InjectRepository(Autor)  private readonly autorRepository: Repository<Autor>) { }
 
   create(createAutorDto: CreateAutorDto) {
-    return 'This action adds a new autor';
+
+    const autor=this.autorRepository.create(createAutorDto);
+    return this.autorRepository.save(autor);
+   
   }
 
   findAll() {
-    return `This action returns all autor`;
+   return  this.autorRepository.find();
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} autor`;
+    return this.autorRepository.findOne({
+      where: { id },
+    })
   }
 
   update(id: number, updateAutorDto: UpdateAutorDto) {
-    return `This action updates a #${id} autor`;
+    return this.autorRepository.update(id, updateAutorDto);
   }
 
   remove(id: number) {
-    return `This action removes a #${id} autor`;
+    return this.autorRepository.softDelete(id);
   }
 }
