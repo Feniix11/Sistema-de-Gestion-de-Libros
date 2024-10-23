@@ -3,6 +3,8 @@ import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { LibrosModule } from './libros/libros.module';
+import { AutorModule } from './autor/autor.module';
 
 @Module({
   imports: [
@@ -17,6 +19,8 @@ import { AppService } from './app.service';
       autoLoadEntities: true, // Aquí incluyes las entidades
       synchronize: true, // Sincroniza automáticamente las entidades con la base de datos (desactívalo en producción)
     }),
+    LibrosModule,
+    AutorModule,
   ],
 
   controllers: [AppController],
