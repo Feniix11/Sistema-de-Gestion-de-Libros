@@ -1,5 +1,5 @@
 import { Libro } from "src/libros/entities/libro.entity";
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Column, DeleteDateColumn, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 
 
@@ -16,6 +16,8 @@ export class Autor {
     @Column()
     apellidos: string;
 
+    @DeleteDateColumn()
+    DeleteAt:Date
 
 
     @OneToMany(()=>Libro , libro=>libro.Isbn)
