@@ -1,5 +1,11 @@
 import { Users } from 'src/users/entities/user.entity';
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  DeleteDateColumn,
+  Entity,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity()
 export class Review {
@@ -14,4 +20,7 @@ export class Review {
 
   @Column()
   score: number;
+
+  @DeleteDateColumn()
+  deletedAt: Date;
 }

@@ -1,5 +1,11 @@
 import { Review } from 'src/review/entities/review.entity';
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  DeleteDateColumn,
+  Entity,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity()
 export class Users {
@@ -15,8 +21,11 @@ export class Users {
   @Column()
   password: string;
 
-  @Column()
+  @Column({ default: 'user' })
   rol: string;
+
+  @DeleteDateColumn()
+  deletedAt: Date;
 
   @OneToMany(() => Review, (review) => review.user)
   children: Review[];
