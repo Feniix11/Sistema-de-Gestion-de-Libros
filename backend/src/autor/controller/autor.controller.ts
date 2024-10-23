@@ -1,8 +1,18 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, ParseIntPipe } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  ParseIntPipe,
+  NotFoundException,
+  Put,
+} from '@nestjs/common';
 import { CreateAutorDto } from '../dto/create-autor.dto';
 import { AutorService } from '../service/autor.service';
 import { UpdateAutorDto } from '../dto/update-autor.dto';
-
 
 @Controller('autor')
 export class AutorController {
@@ -10,6 +20,9 @@ export class AutorController {
 
   @Post()
   create(@Body() createAutorDto: CreateAutorDto) {
+    if (!createAutorDto.nombre || !createAutorDto.apellidos) {
+      throw new NotFoundException('No se proporciono la informacion correcta');
+    }
     return this.autorService.create(createAutorDto);
   }
 
@@ -19,17 +32,44 @@ export class AutorController {
   }
 
   @Get(':id')
-  findOne(@Param('id',ParseIntPipe) id: number) {
+  findOne(@Param('id', ParseIntPipe) id: number) {
     return this.autorService.findOne(id);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateAutorDto: UpdateAutorDto) {
-    return this.autorService.update(+id, updateAutorDto);
+  @Put(':id')
+  async update(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() updateAutorDto: UpdateAutorDto,
+  ) {
+    if (!updateAutorDto || Object.keys(updateAutorDto).length == 0) {
+      throw new NotFoundException('No se proporciono informacion correcta');
+    }
+
+    // const autor = await this.autorService.findOne(id);
+    // if (!autor) {
+    //   throw new NotFoundException(`autor con id ${id} no encontrado`);
+    // }
+
+    const respuesta = await this.autorService.update(id, updateAutorDto);
+
+    const valor =
+      respuesta.affected > 0
+        ? 'Autor Actualizado Correctamente'
+        : 'Ocurrio un error en la Actualizacion';
+    return {
+      valor,
+    };
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.autorService.remove(+id);
+  async remove(@Param('id', ParseIntPipe) id: number) {
+    const respuesta = await this.autorService.remove(id);
+
+    return {
+      valor:
+        respuesta.affected > 0
+          ? 'Autor Eliminado Correctamente'
+          : 'Ocurrio un error durante la eliminacion',
+    };
   }
 }
