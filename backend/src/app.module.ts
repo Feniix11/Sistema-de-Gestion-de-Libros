@@ -3,10 +3,13 @@ import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { UsersModule } from './users/users.module';
-import { ReviewModule } from './review/review.module';
-import { LibrosModule } from './libros/libros.module';
-import { AutorModule } from './autor/autor.module';
+import { UsersModule } from './modules/administration/users/users.module';
+import {
+  AutorModule,
+  LibrosModule,
+  ReviewModule,
+} from './modules/operation/booksheet/booksheet.proxy';
+import { AuthModule } from './modules/administration/auth/auth.module';
 
 @Module({
   imports: [
@@ -25,6 +28,7 @@ import { AutorModule } from './autor/autor.module';
     ReviewModule,
     LibrosModule,
     AutorModule,
+    AuthModule,
   ],
 
   controllers: [AppController],
